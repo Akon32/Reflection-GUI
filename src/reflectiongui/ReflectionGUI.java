@@ -4,10 +4,11 @@ import reflectiongui.controllers.DesktopController;
 import reflectiongui.renderers.DesktopRenderer;
 
 /**
- * Класс-синглетон, создающий графический интерфейс на основе данных о типе объекта.
+ * Класс-синглетон, создающий графический интерфейс
+ * на основе данных о типе объекта.
  */
 public class ReflectionGUI {
-    private static ReflectionGUI instance;
+    private static ReflectionGUI instance = new ReflectionGUI();
     private DesktopController desktopController;
 
     protected ReflectionGUI() {
@@ -38,11 +39,9 @@ public class ReflectionGUI {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    /**
-     * @return возвращает экземпляр объекта ReflectionGUI.
-     */
+    /** @return возвращает экземпляр объекта ReflectionGUI. */
     public static ReflectionGUI getInstance() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return instance;
     }
 
     /**

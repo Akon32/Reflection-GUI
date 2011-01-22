@@ -5,18 +5,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Фабрика для создания представлений объектов, методов, свойств.
+ * Фабрика для создания представлений
+ * объектов, методов, свойств.
  */
 public class RendererFactory {
-    private static RendererFactory instance;
+    private static RendererFactory instance = new RendererFactory();
 
     protected RendererFactory() {
     }
 
     public static RendererFactory getInstance() {
-        if (instance == null) {
-            instance = new RendererFactory();
-        }
         return instance;
     }
 
