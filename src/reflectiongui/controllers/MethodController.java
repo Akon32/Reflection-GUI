@@ -2,12 +2,16 @@ package reflectiongui.controllers;
 
 import reflectiongui.renderers.MethodRenderer;
 
+import javax.swing.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 
 /**
- * Контроллер метода. Содержит метод {@link #invoke()}, который производит вызов контролируемого метода.
+ * Контроллер метода.
+ * Содержит метод {@link #invoke()}, который производит вызов контролируемого метода.
  */
-public class MethodController {
+public class MethodController implements AnnotatedElement {
 
     private ObjectController objectController;
     private Method method;
@@ -17,6 +21,8 @@ public class MethodController {
     public MethodController(ObjectController objectController, Method method) {
         this.objectController = objectController;
         this.method = method;
+        method.setAccessible(true);
+        methodParameters = new MethodParameters(method);
     }
 
     /**
@@ -25,7 +31,27 @@ public class MethodController {
      * свойств контролируемого объекта.
      */
     public void invoke() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        // (lock)
+        objectController.updateObject();
+        methodParameters.updateObject();
+        new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                return method.invoke(objectController.getControlledObject(), methodParameters.getParameters());
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    renderer.displayResult(get());
+                } catch (Exception e) {
+                    renderer.displayException(e);
+                } finally {
+                    // (unlock)
+                    objectController.updateUI();
+                }
+            }
+        }.execute();
     }
 
     public Method getMethod() {
@@ -38,5 +64,33 @@ public class MethodController {
 
     public void setRenderer(MethodRenderer renderer) {
         this.renderer = renderer;
+    }
+
+    public ObjectController getObjectController() {
+        return objectController;
+    }
+
+    public MethodParameters getMethodParameters() {
+        return methodParameters;
+    }
+
+    @Override
+    public Annotation[] getAnnotations() {
+        return method.getAnnotations();
+    }
+
+    @Override
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
+        return method.isAnnotationPresent(annotationClass);
+    }
+
+    @Override
+    public Annotation[] getDeclaredAnnotations() {
+        return method.getDeclaredAnnotations();
+    }
+
+    @Override
+    public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
+        return method.getAnnotation(annotationClass);
     }
 }

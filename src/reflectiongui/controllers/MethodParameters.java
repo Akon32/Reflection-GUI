@@ -69,6 +69,15 @@ public class MethodParameters {
     }
 
     /**
+     * Обновить поля объекта в соответствии с тем,
+     * что содержит графический интерфейс.
+     */
+    public void updateObject() {
+        for (VariableController c : controllers)
+            c.updateObject();
+    }
+
+    /**
      * Контроллер параметра метода. Тесно связан со своим внешним объектом {@link MethodParameters},
      * использует значения его полей-массивов как свои, подставляя свой номер.
      */

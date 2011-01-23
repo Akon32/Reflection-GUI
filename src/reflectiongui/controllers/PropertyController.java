@@ -5,26 +5,38 @@ import reflectiongui.renderers.PropertyRenderer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-/**
- * Контроллер свойства
- */
+/** Контроллер свойства */
+// TODO: доступ к свойству через getter'ы и setter'ы
 public class PropertyController implements VariableController {
     private Object controlledObject;
     private PropertyRenderer renderer;
     private Field controlledField;
+    // TODO: скорее всего, это поле нужно будет удалить
     private ObjectController objectController;
 
     public PropertyController(Field controlledField, ObjectController objectController) {
         this.controlledField = controlledField;
+        controlledField.setAccessible(true);
         this.objectController = objectController;
+        controlledObject = objectController.getControlledObject();
     }
 
     public void updateObject() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        try {
+            controlledField.set(controlledObject, renderer.getValue());
+        } catch (IllegalAccessException e) {
+            //по идее, исключения здесь быть не должно.
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateUI() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        try {
+            renderer.setValue(controlledField.get(controlledObject));
+        } catch (IllegalAccessException e) {
+            //по идее, исключения здесь быть не должно.
+            throw new RuntimeException(e);
+        }
     }
 
     public Class getType() {
