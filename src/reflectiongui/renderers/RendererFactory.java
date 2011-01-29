@@ -23,9 +23,13 @@ import java.util.Properties;
 public class RendererFactory {
     private static RendererFactory instance = new RendererFactory();
 
-    private final String TYPE_RENDERERS_RESOURCE_PATH = "/META-INF/type-renderers.properties";
-    private final String RENDERER_CLASSES_RESOURCE_PATH = "/META-INF/renderer-classes.properties";
+    /** Ресурс, содержащий стандартные соответствия Class -> VariableRenderer */
+    private final String TYPE_RENDERERS_RESOURCE_PATH = "/META-INF/std-type-renderers.properties";
+    /** Ресурс, содержащий стандартные имена классов renderer'ов (methodrenderer, propertyrenderer, objectrenderer) */
+    private final String RENDERER_CLASSES_RESOURCE_PATH = "/META-INF/std-renderers.properties";
+    /** Ресурс, содержащий пользовательские соответствия Class -> VariableRenderer */
     private final String CUSTOM_TYPE_RENDERERS_RESOURCE_PATH = "/META-INF/type-renderers.properties";
+    /** Ресурс, содержащий пользовательские имена классов renderer'ов (methodrenderer, propertyrenderer, objectrenderer) */
     private final String CUSTOM_RENDERER_CLASSES_RESOURCE_PATH = "/META-INF/renderers.properties";
 
     /** Соответствие типов переменных renderer'ам типов. type -> rendererClass */
