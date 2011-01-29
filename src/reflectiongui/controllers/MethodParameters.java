@@ -2,6 +2,7 @@ package reflectiongui.controllers;
 
 import reflectiongui.renderers.RendererFactory;
 import reflectiongui.renderers.VariableRenderer;
+import reflectiongui.util.Utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -112,23 +113,7 @@ public class MethodParameters {
 
         @Override
         public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-            return findObjectOfClass(annotations[paramNumber], annotationClass);
-        }
-
-        /**
-         * Найти среди массива объект заданного класса.
-         *
-         * @param array массив аннотаций.
-         * @param clazz класс искомого объекта.
-         * @param <T>   тип искомого объекта.
-         * @return первый найденный объект, или null, если ничего не найдено.
-         */
-        public <T> T findObjectOfClass(Object[] array, Class<T> clazz) {
-            for (Object a : array)
-                if (clazz.isAssignableFrom(a.getClass())) {
-                    return clazz.cast(a);
-                }
-            return null;
+            return Utils.findObjectOfClass(annotations[paramNumber], annotationClass);
         }
 
         @Override

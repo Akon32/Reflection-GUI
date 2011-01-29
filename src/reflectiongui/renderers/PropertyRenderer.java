@@ -10,6 +10,8 @@ import javax.swing.*;
  * (создаваемое {@link VariableRenderer}) для ввода и вывода
  * значения соответствующего свойства, а также кнопки для принудительного чтения
  * или установки свойства.
+ * <p/>
+ * Наследники этого класса обязательно должны иметь конструктор, принимающий 1 параметр VariableRenderer.
  */
 public class PropertyRenderer implements VariableRenderer {
     private VariableRenderer variableRenderer;
@@ -33,4 +35,5 @@ public class PropertyRenderer implements VariableRenderer {
     public void initialize(VariableController controller) {
         variableRenderer.initialize(controller);
     }
+
 }
