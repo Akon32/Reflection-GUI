@@ -29,7 +29,10 @@ public class RendererFactory {
     private final String RENDERER_CLASSES_RESOURCE_PATH = "/META-INF/std-renderers.properties";
     /** Ресурс, содержащий пользовательские соответствия Class -> VariableRenderer */
     private final String CUSTOM_TYPE_RENDERERS_RESOURCE_PATH = "/META-INF/type-renderers.properties";
-    /** Ресурс, содержащий пользовательские имена классов renderer'ов (methodrenderer, propertyrenderer, objectrenderer) */
+    /**
+     * Ресурс, содержащий пользовательские имена классов renderer'ов
+     * (methodrenderer, propertyrenderer, objectrenderer, desktoprenderer)
+     */
     private final String CUSTOM_RENDERER_CLASSES_RESOURCE_PATH = "/META-INF/renderers.properties";
 
     /** Соответствие типов переменных renderer'ам типов. type -> rendererClass */
@@ -41,6 +44,8 @@ public class RendererFactory {
     private Class<? extends PropertyRenderer> defaultPropertyRendererClass;
     /** Используемый по умолчанию класс renderer'а объектов. */
     private Class<? extends ObjectRenderer> defaultObjectRendererClass;
+    /** Используемый по умолчанию класс renderer'а рабочего стола. */
+    private Class<? extends DesktopRenderer> desktopRendererClass;
 
     protected RendererFactory() {
         initRendererClasses();
@@ -122,9 +127,17 @@ public class RendererFactory {
         }
     }
 
-    public DesktopRenderer createDesktopRenderer(Class<? extends DesktopRenderer> rendererClass) {
+    public Class<? extends DesktopRenderer> getDesktopRendererClass() {
+        return desktopRendererClass;
+    }
+
+    public void setDesktopRendererClass(Class<? extends DesktopRenderer> desktopRendererClass) {
+        this.desktopRendererClass = desktopRendererClass;
+    }
+
+    public DesktopRenderer createDesktopRenderer() {
         try {
-            return rendererClass.newInstance();
+            return desktopRendererClass.newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -149,7 +162,7 @@ public class RendererFactory {
             defaultMethodRendererClass = Class.forName(renderers.getProperty("methodrenderer")).asSubclass(MethodRenderer.class);
             defaultPropertyRendererClass = Class.forName(renderers.getProperty("propertyrenderer")).asSubclass(PropertyRenderer.class);
             defaultObjectRendererClass = Class.forName(renderers.getProperty("objectrenderer")).asSubclass(ObjectRenderer.class);
-            //может и DesktopRenderer ?
+            desktopRendererClass = Class.forName(renderers.getProperty("desktoprenderer")).asSubclass(DesktopRenderer.class);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can`t find correct renderer classes", e);
         }
