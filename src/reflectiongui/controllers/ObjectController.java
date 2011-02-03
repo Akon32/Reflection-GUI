@@ -6,6 +6,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Контроллер объекта, отражаемого в графический интерфейс
@@ -22,13 +24,16 @@ public class ObjectController implements AnnotatedElement {
         this.controlledObject = controlledObject;
         Class clazz = controlledObject.getClass();
         // TODO: Positions
-
+        Set<MethodController> ms = new LinkedHashSet<MethodController>();
         for (Method m : clazz.getMethods()) {
-
+            ms.add(new MethodController(this, m));
         }
+        methodControllers = ms.toArray(new MethodController[0]);
+        Set<PropertyController> ps = new LinkedHashSet<PropertyController>();
         for (Field f : clazz.getFields()) {
-
+            ps.add(new PropertyController(this, f));
         }
+        propertyControllers = ps.toArray(new PropertyController[0]);
     }
 
     /**

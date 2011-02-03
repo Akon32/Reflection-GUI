@@ -14,7 +14,7 @@ public class PropertyController implements VariableController {
     // TODO: скорее всего, это поле нужно будет удалить
     private ObjectController objectController;
 
-    public PropertyController(Field controlledField, ObjectController objectController) {
+    public PropertyController(ObjectController objectController, Field controlledField) {
         this.controlledField = controlledField;
         controlledField.setAccessible(true);
         this.objectController = objectController;
