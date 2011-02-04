@@ -1,6 +1,7 @@
 package reflectiongui.controllers;
 
 import reflectiongui.renderers.ObjectRenderer;
+import reflectiongui.renderers.RendererFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -34,6 +35,8 @@ public class ObjectController implements AnnotatedElement {
             ps.add(new PropertyController(this, f));
         }
         propertyControllers = ps.toArray(new PropertyController[0]);
+        renderer = RendererFactory.getInstance().createObjectRenderer(clazz);
+        renderer.initialize(this);
     }
 
     /**
@@ -86,5 +89,13 @@ public class ObjectController implements AnnotatedElement {
     @Override
     public Annotation[] getDeclaredAnnotations() {
         return controlledObject.getClass().getDeclaredAnnotations();
+    }
+
+    public MethodController[] getMethodControllers() {
+        return methodControllers;
+    }
+
+    public VariableController[] getPropertyControllers() {
+        return propertyControllers;
     }
 }

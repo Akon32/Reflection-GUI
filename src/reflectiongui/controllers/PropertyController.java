@@ -1,6 +1,7 @@
 package reflectiongui.controllers;
 
 import reflectiongui.renderers.PropertyRenderer;
+import reflectiongui.renderers.RendererFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -19,6 +20,9 @@ public class PropertyController implements VariableController {
         controlledField.setAccessible(true);
         this.objectController = objectController;
         controlledObject = objectController.getControlledObject();
+
+        renderer = RendererFactory.getInstance().createPropertyRenderer(controlledField);
+        renderer.initialize(this);
     }
 
     public void updateObject() {

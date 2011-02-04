@@ -77,7 +77,7 @@ public class RendererFactory {
      * @param field поле.
      * @return renderer свойства.
      */
-    public VariableRenderer createPropertyRenderer(Field field) {
+    public PropertyRenderer createPropertyRenderer(Field field) {
         VariableRenderer variableRenderer = createVariableRenderer(field.getType(), field.getAnnotations());
         RenderPropertyBy renderBy = field.getAnnotation(RenderPropertyBy.class);
         Class<? extends PropertyRenderer> rc = renderBy == null ? defaultPropertyRendererClass : renderBy.value();
@@ -143,11 +143,26 @@ public class RendererFactory {
         }
     }
 
+    /**
+     * Регистрация класса renderer'a.
+     * Класс должен иметь аннотацию {@link reflectiongui.annotations.Renders},
+     * по которой будет определяться класс, который может отображаеть renderer.
+     *
+     * @param rendererClass класс renderer'а
+     * @throws IllegalArgumentException если переданный класс не имеет аннотации
+     *                                  {@link reflectiongui.annotations.Renders}.
+     */
     //TODO определиться, нужны ли следующие 2 метода.
     public void registerRenderer(Class rendererClass) throws IllegalArgumentException {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
+    /**
+     * Отмена регистрации класса renderer'а,
+     * зарегистрированного методом {@link #registerRenderer(Class)}.
+     *
+     * @param rendererClass класс renderer'а
+     */
     public void unregisterRenderer(Class rendererClass) {
         throw new UnsupportedOperationException("Not implemented yet");
     }

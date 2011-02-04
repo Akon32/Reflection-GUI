@@ -1,6 +1,7 @@
 package reflectiongui.controllers;
 
 import reflectiongui.renderers.MethodRenderer;
+import reflectiongui.renderers.RendererFactory;
 
 import javax.swing.*;
 import java.lang.annotation.Annotation;
@@ -23,6 +24,9 @@ public class MethodController implements AnnotatedElement {
         this.method = method;
         method.setAccessible(true);
         methodParameters = new MethodParameters(method);
+
+        renderer = RendererFactory.getInstance().createMethodRenderer(method);
+        renderer.initialize(this);
     }
 
     /**

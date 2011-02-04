@@ -1,6 +1,5 @@
 package reflectiongui;
 
-import reflectiongui.controllers.DesktopController;
 import reflectiongui.renderers.DesktopRenderer;
 import reflectiongui.renderers.RendererFactory;
 
@@ -10,24 +9,17 @@ import reflectiongui.renderers.RendererFactory;
  */
 public class ReflectionGUI {
     private static ReflectionGUI instance;
-    private DesktopController desktopController;
+    private DesktopRenderer desktopRenderer;
 
     protected ReflectionGUI() {
-        desktopController = new DesktopController();
-        DesktopRenderer renderer = RendererFactory.getInstance().createDesktopRenderer();
-        desktopController.setDesktopRenderer(renderer);
-        renderer.initialize(desktopController);
+        desktopRenderer = RendererFactory.getInstance().createDesktopRenderer();
     }
 
     /**
      * Установить класс, объект которого будет использоваться в качестве DesktopRenderer'а.
      *
      * @param rendererClass класс используемого DesktopRenderer'а
-     * @deprecated можно устанавливать класс непосредственно через RendererFactory,
-     *             можно указывать его в renderers.properties.
      */
-    // TODO: подумать, не удалить ли этот метод?
-    @Deprecated
     public static void setDesktopRendererClass(Class<? extends DesktopRenderer> rendererClass) {
         RendererFactory.getInstance().setDesktopRendererClass(rendererClass);
     }
@@ -51,7 +43,7 @@ public class ReflectionGUI {
      */
     public void addObjects(Object... objects) {
         for (Object o : objects) {
-            desktopController.addObject(o);
+            desktopRenderer.addObject(o);
         }
     }
 
@@ -62,7 +54,12 @@ public class ReflectionGUI {
      */
     public void removeObjects(Object... objects) {
         for (Object o : objects) {
-            desktopController.removeObject(o);
+            desktopRenderer.removeObject(o);
         }
+    }
+
+    /** Завершить приложение. */
+    public void shutdownApplication() {
+        System.exit(0);
     }
 }

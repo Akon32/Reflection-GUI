@@ -1,13 +1,28 @@
 package reflectiongui.renderers;
 
-import reflectiongui.controllers.DesktopController;
-
-/** Объект, отвечающий за графическое представление рабочего стола. */
+/**
+ * Объект, отвечающий за графическое представление "рабочего стола".
+ * На "рабочем столе" находятся объекты, с которыми работает ReflectionGUI.
+ */
 public interface DesktopRenderer {
 
-    void showObjectRenderer(ObjectRenderer objectRenderer);
+    /**
+     * Добавить объект на "рабочий стол" программы.
+     * <p/>
+     * В этом методе должен создаваться контроллер объекта,
+     * а следовательно, контроллеры и renderer'ы всех его полей и методов.
+     *
+     * @param object объект, который должен быть отображен
+     *               в графический интерфейс посредством ReflectionGUI.
+     */
+    void addObject(Object object);
 
-    void hideObjectRenderer(ObjectRenderer objectRenderer);
-
-    void initialize(DesktopController desktopController);
+    /**
+     * Удалить объект с "рабочего стола".
+     * <p/>
+     * При удалении всех объектов некоторые реализации DesktopRenderer могут завершать программу.
+     *
+     * @param object объект, ранее отображённый вызовом {@link #addObject(Object)}.
+     */
+    void removeObject(Object object);
 }
