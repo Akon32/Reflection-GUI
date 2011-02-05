@@ -19,7 +19,7 @@ public class ObjectController implements AnnotatedElement {
     private Object controlledObject;
     private ObjectRenderer renderer;
     private MethodController[] methodControllers;
-    private VariableController[] propertyControllers;
+    private PropertyController[] propertyControllers;
 
     public ObjectController(Object controlledObject) {
         this.controlledObject = controlledObject;
@@ -95,7 +95,7 @@ public class ObjectController implements AnnotatedElement {
         return methodControllers;
     }
 
-    public VariableController[] getPropertyControllers() {
+    public PropertyController[] getPropertyControllers() {
         return propertyControllers;
     }
 }
