@@ -18,4 +18,13 @@
   <target name="clean" description="Очистить">
     <delete dir="build"/>
   </target>
+
+  <target name="rundemo-1" depends="builddemo" description="Run demo (1)">
+    <java classpath="build/Reflection-GUI.jar:build/demo-classes"
+          classname="reflectiongui.demo.StringReverser" fork="true"/>
+  </target>
+  <target name="builddemo" depends="jar">
+    <mkdir dir="build/demo-classes"/>
+    <javac srcdir="demo" destdir="build/demo-classes" classpath="build/Reflection-GUI.jar"/>
+  </target>
 </project>
