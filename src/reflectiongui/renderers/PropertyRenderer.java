@@ -37,7 +37,7 @@ public class PropertyRenderer implements VariableRenderer {
     }
 
     public JComponent rootComponent() {
-        return variableRenderer.rootComponent();
+        return rootComponent;
     }
 
     public void setValue(Object value) {
