@@ -30,13 +30,17 @@ public class DefaultMethodRenderer implements MethodRenderer {
 
     @Override
     public void displayResult(Object result) {
-        resultRenderer.setValue(result);
+        if (resultRenderer != null) {
+            resultRenderer.setValue(result);
+        }
         exceptionRenderer.setValue(null);
     }
 
     @Override
     public void displayException(Throwable throwable) {
-        resultRenderer.setValue(null);
+        if (resultRenderer != null) {
+            resultRenderer.setValue(null);
+        }
         exceptionRenderer.setValue(throwable);
     }
 
@@ -55,9 +59,13 @@ public class DefaultMethodRenderer implements MethodRenderer {
         });
         rootComponent.add(button);
 
-        resultRenderer = RendererFactory.getInstance().createVariableRenderer(controller.getMethod().getReturnType(), controller.getAnnotations());
-        resultRenderer.initialize(new EmptyVariableController("Result", controller.getMethod().getReturnType(), controller.getAnnotations()));
-        rootComponent.add(resultRenderer.rootComponent());
+        Class returnType = controller.getMethod().getReturnType();
+        boolean returnsVoid = Void.TYPE.isAssignableFrom(returnType);
+        if (!returnsVoid) {
+            resultRenderer = RendererFactory.getInstance().createVariableRenderer(returnType, controller.getAnnotations());
+            resultRenderer.initialize(new EmptyVariableController("Result", returnType, controller.getAnnotations()));
+            rootComponent.add(resultRenderer.rootComponent());
+        }
 
         // TODO: несколько renderer'ов исключений в методе
         exceptionRenderer = RendererFactory.getInstance().createVariableRenderer(Throwable.class, new Annotation[0]);
