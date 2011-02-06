@@ -1,5 +1,9 @@
 package reflectiongui.util;
 
+import reflectiongui.annotations.Title;
+
+import java.lang.reflect.AnnotatedElement;
+
 /** Различные утилиты. */
 public final class Utils {
     private Utils() {
@@ -19,5 +23,19 @@ public final class Utils {
                 return clazz.cast(a);
             }
         return null;
+    }
+
+    /**
+     * Получить заголовок для переданного элемента.
+     *
+     * @param element      аннотированный элемент.
+     * @param defaultValue значение заголовка по умолчанию.
+     * @return значение заголовка, взятое из аннотации {@link Title} элемента,
+     *         или defaultValue, если элемент не имеет требуемой аннотации.
+     * @see Title
+     */
+    public static String getTitleFromAnnotations(AnnotatedElement element, String defaultValue) {
+        Title a = element.getAnnotation(Title.class);
+        return a == null ? defaultValue : a.value();
     }
 }

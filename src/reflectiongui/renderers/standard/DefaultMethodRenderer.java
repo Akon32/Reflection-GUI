@@ -46,7 +46,7 @@ public class DefaultMethodRenderer implements MethodRenderer {
             rootComponent.add(paramRenderer.rootComponent());
         }
 
-        JButton button = new JButton(controller.getMethod().getName());
+        JButton button = new JButton(controller.getTitle());
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -56,26 +56,26 @@ public class DefaultMethodRenderer implements MethodRenderer {
         rootComponent.add(button);
 
         resultRenderer = RendererFactory.getInstance().createVariableRenderer(controller.getMethod().getReturnType(), controller.getAnnotations());
-        resultRenderer.initialize(new EmptyVariableController(controller.getMethod().getReturnType(), controller.getAnnotations()));
-        resultRenderer.rootComponent().setBorder(BorderFactory.createTitledBorder("Result"));
+        resultRenderer.initialize(new EmptyVariableController("Result", controller.getMethod().getReturnType(), controller.getAnnotations()));
         rootComponent.add(resultRenderer.rootComponent());
 
         // TODO: несколько renderer'ов исключений в методе
         exceptionRenderer = RendererFactory.getInstance().createVariableRenderer(Throwable.class, new Annotation[0]);
-        exceptionRenderer.initialize(new EmptyVariableController(Throwable.class, new Annotation[0]));
-        exceptionRenderer.rootComponent().setBorder(BorderFactory.createTitledBorder("Error"));
+        exceptionRenderer.initialize(new EmptyVariableController("Error", Throwable.class, new Annotation[0]));
         rootComponent.add(exceptionRenderer.rootComponent());
     }
 
     /**
-     * VariableController, ничего не делающий при вызове методов
-     * {@link #updateObject()}, {@link #updateUI()}
+     * VariableController, ничего не делающий при вызове
+     * методов {@link #updateObject()} и {@link #updateUI()}
      */
     private static class EmptyVariableController implements VariableController {
         private final Class type;
         private final Annotation[] annotations;
+        private final String title;
 
-        private EmptyVariableController(Class type, Annotation[] annotations) {
+        private EmptyVariableController(String title, Class type, Annotation[] annotations) {
+            this.title = title;
             this.type = type;
             this.annotations = annotations;
         }
@@ -93,6 +93,11 @@ public class DefaultMethodRenderer implements MethodRenderer {
         @Override
         public Class getType() {
             return type;
+        }
+
+        @Override
+        public String getTitle() {
+            return title;
         }
 
         @Override

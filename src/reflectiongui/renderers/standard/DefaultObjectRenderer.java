@@ -29,7 +29,7 @@ public class DefaultObjectRenderer implements ObjectRenderer {
         JComponent tabs = new JTabbedPane();
         rootComponent.add(tabs);
         for (MethodController mc : controller.getMethodControllers()) {
-            tabs.add(mc.getMethod().getName(), mc.getRenderer().rootComponent());
+            tabs.add(mc.getTitle(), mc.getRenderer().rootComponent());
         }
     }
 }

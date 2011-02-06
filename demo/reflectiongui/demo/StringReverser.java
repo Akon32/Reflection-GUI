@@ -1,6 +1,7 @@
 package reflectiongui.demo;
 
 import reflectiongui.ReflectionGUI;
+import reflectiongui.annotations.Title;
 
 /** Простейшее демо ReflectionGUI - программа, работающая со строками. */
 public class StringReverser {
@@ -13,11 +14,12 @@ public class StringReverser {
 class Reverser {
     String a, b, r;
 
-    public String reverse(String string) {
+    public String reverse(@Title("string") String string) {
         StringBuilder b = new StringBuilder(string);
         return b.reverse().toString();
     }
 
+    @Title("concat")
     String add() {
         return r = a + b;
     }

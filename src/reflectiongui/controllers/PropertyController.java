@@ -2,6 +2,7 @@ package reflectiongui.controllers;
 
 import reflectiongui.renderers.PropertyRenderer;
 import reflectiongui.renderers.RendererFactory;
+import reflectiongui.util.Utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -14,12 +15,14 @@ public class PropertyController implements VariableController {
     private Field controlledField;
     // TODO: скорее всего, это поле нужно будет удалить
     private ObjectController objectController;
+    private String title;
 
     public PropertyController(ObjectController objectController, Field controlledField) {
         this.controlledField = controlledField;
         controlledField.setAccessible(true);
         this.objectController = objectController;
         controlledObject = objectController.getControlledObject();
+        title = Utils.getTitleFromAnnotations(controlledField, controlledField.getName());
 
         renderer = RendererFactory.getInstance().createPropertyRenderer(controlledField);
         renderer.initialize(this);
@@ -45,6 +48,11 @@ public class PropertyController implements VariableController {
 
     public Class getType() {
         return controlledField.getType();
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {

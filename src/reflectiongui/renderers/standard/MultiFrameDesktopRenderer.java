@@ -26,9 +26,9 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
     }
 
     private JFrame createFrame(final Object object) {
-        //TODO: получение заголовка окна из аннотации.
         JFrame frame = new JFrame();
         ObjectController controller = new ObjectController(object);
+        frame.setTitle(controller.getTitle());
         frame.getContentPane().add(controller.getRenderer().rootComponent());
         frame.pack();
         frame.setLocationByPlatform(true);

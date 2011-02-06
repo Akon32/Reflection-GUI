@@ -8,16 +8,21 @@ import javax.swing.text.JTextComponent;
 
 /** Renderer типа для String. */
 public class StringRenderer implements VariableRenderer {
+    private JPanel panel;
+    private JLabel label;
     private JTextComponent textComponent;
 
     public StringRenderer() {
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
+        panel.add(label = new JLabel());
         // TODO: другие типы компонентов (JTextPane,JTextArea)
-        textComponent = new JTextField();
+        panel.add(textComponent = new JTextField());
     }
 
     @Override
     public JComponent rootComponent() {
-        return textComponent;
+        return panel;
     }
 
     @Override
@@ -32,6 +37,6 @@ public class StringRenderer implements VariableRenderer {
 
     @Override
     public void initialize(VariableController controller) {
-        // do nothing
+        label.setText(controller.getTitle());
     }
 }

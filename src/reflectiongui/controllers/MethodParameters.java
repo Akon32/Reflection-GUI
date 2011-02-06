@@ -20,6 +20,7 @@ public class MethodParameters {
     private final VariableRenderer[] renderers;
     private final Annotation[][] annotations;
     private final Class[] types;
+    private final String[] titles;
 
     /**
      * Конструктор.
@@ -35,8 +36,13 @@ public class MethodParameters {
         renderers = new VariableRenderer[paramCount];
         annotations = method.getParameterAnnotations();
         types = method.getParameterTypes();
+        titles = new String[paramCount];
         for (int i = 0; i < paramCount; i++) {
             controllers[i] = new ParameterController(i);
+            // !!! здесь есть жесткая зависимость от порядка создания объектов.
+            // верная последовательность: controller -> title -> renderer.initialize()
+            // надо бы что-то с этим сделать
+            titles[i] = Utils.getTitleFromAnnotations(controllers[i], "param-" + i);
             renderers[i] = RendererFactory.getInstance().createVariableRenderer(types[i], annotations[i]);
             renderers[i].initialize(controllers[i]);
         }
@@ -104,6 +110,11 @@ public class MethodParameters {
         @Override
         public Class getType() {
             return types[paramNumber];
+        }
+
+        @Override
+        public String getTitle() {
+            return titles[paramNumber];
         }
 
         @Override

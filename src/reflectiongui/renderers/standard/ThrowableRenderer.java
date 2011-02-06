@@ -10,30 +10,35 @@ import java.awt.*;
 /** Renderer типа для Throwable. */
 @Renders(java.lang.Throwable.class)
 public class ThrowableRenderer implements VariableRenderer {
-    private JTextField rootComponent;
+    private JPanel panel;
+    private JLabel label;
+    private JTextField textField;
 
     public ThrowableRenderer() {
-        rootComponent = new JTextField();
-        rootComponent.setForeground(Color.RED);
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
+        panel.add(label = new JLabel());
+        panel.add(textField = new JTextField());
+        textField.setForeground(Color.RED);
     }
 
     @Override
     public JComponent rootComponent() {
-        return rootComponent;
+        return panel;
     }
 
     @Override
     public void setValue(Object value) {
-        rootComponent.setText(value == null ? "" : value.toString());
+        textField.setText(value == null ? "" : value.toString());
     }
 
     @Override
     public Object getValue() {
-        return new Throwable(rootComponent.getText());
+        return new Throwable(textField.getText());
     }
 
     @Override
     public void initialize(VariableController controller) {
-        // do nothing
+        label.setText(controller.getTitle());
     }
 }

@@ -2,6 +2,7 @@ package reflectiongui.controllers;
 
 import reflectiongui.renderers.MethodRenderer;
 import reflectiongui.renderers.RendererFactory;
+import reflectiongui.util.Utils;
 
 import javax.swing.*;
 import java.lang.annotation.Annotation;
@@ -18,12 +19,14 @@ public class MethodController implements AnnotatedElement {
     private Method method;
     private MethodParameters methodParameters;
     private MethodRenderer renderer;
+    private String title;
 
     public MethodController(ObjectController objectController, Method method) {
         this.objectController = objectController;
         this.method = method;
         method.setAccessible(true);
         methodParameters = new MethodParameters(method);
+        title = Utils.getTitleFromAnnotations(method, method.getName());
 
         renderer = RendererFactory.getInstance().createMethodRenderer(method);
         renderer.initialize(this);
@@ -72,6 +75,10 @@ public class MethodController implements AnnotatedElement {
 
     public MethodParameters getMethodParameters() {
         return methodParameters;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     @Override

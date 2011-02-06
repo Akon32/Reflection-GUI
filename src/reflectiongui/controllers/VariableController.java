@@ -24,4 +24,6 @@ public interface VariableController extends AnnotatedElement {
     /** @return класс контролируемой переменной. */
     Class getType();
 
+    /** @return предназначенный для отображения заголовок переменной */
+    String getTitle();
 }
