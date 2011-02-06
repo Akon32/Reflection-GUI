@@ -26,6 +26,7 @@ public class PropertyController implements VariableController {
 
         renderer = RendererFactory.getInstance().createPropertyRenderer(controlledField);
         renderer.initialize(this);
+        updateUI();
     }
 
     public void updateObject() {
@@ -74,5 +75,4 @@ public class PropertyController implements VariableController {
     public PropertyRenderer getRenderer() {
         return renderer;
     }
-
 }
