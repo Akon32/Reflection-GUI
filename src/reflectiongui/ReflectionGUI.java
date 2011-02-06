@@ -11,7 +11,7 @@ public class ReflectionGUI {
     private static ReflectionGUI instance;
     private DesktopRenderer desktopRenderer;
 
-    protected ReflectionGUI() {
+    private ReflectionGUI() {
         desktopRenderer = RendererFactory.getInstance().createDesktopRenderer();
     }
 

@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 public class PropertyRenderer implements VariableRenderer {
     private VariableRenderer variableRenderer;
     private VariableController variableController;
-    JComponent rootComponent;
+    private JComponent rootComponent;
 
     public PropertyRenderer(VariableRenderer variableRenderer) {
         this.variableRenderer = variableRenderer;

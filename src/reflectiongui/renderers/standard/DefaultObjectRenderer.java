@@ -9,7 +9,7 @@ import javax.swing.*;
 
 /** Renderer объектов по умолчанию. */
 public class DefaultObjectRenderer implements ObjectRenderer {
-    JComponent rootComponent;
+    private JComponent rootComponent;
 
     public DefaultObjectRenderer() {
         rootComponent = new JPanel();

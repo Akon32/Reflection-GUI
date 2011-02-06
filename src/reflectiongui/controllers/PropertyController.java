@@ -67,7 +67,4 @@ public class PropertyController implements VariableController {
         return renderer;
     }
 
-    public void setRenderer(PropertyRenderer renderer) {
-        this.renderer = renderer;
-    }
 }

@@ -66,10 +66,6 @@ public class MethodController implements AnnotatedElement {
         return renderer;
     }
 
-    public void setRenderer(MethodRenderer renderer) {
-        this.renderer = renderer;
-    }
-
     public ObjectController getObjectController() {
         return objectController;
     }

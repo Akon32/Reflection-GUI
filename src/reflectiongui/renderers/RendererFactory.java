@@ -47,7 +47,7 @@ public class RendererFactory {
     /** Используемый по умолчанию класс renderer'а рабочего стола. */
     private Class<? extends DesktopRenderer> desktopRendererClass;
 
-    protected RendererFactory() {
+    private RendererFactory() {
         initRendererClasses();
     }
 
@@ -82,8 +82,7 @@ public class RendererFactory {
         RenderPropertyBy renderBy = field.getAnnotation(RenderPropertyBy.class);
         Class<? extends PropertyRenderer> rc = renderBy == null ? defaultPropertyRendererClass : renderBy.value();
         try {
-            PropertyRenderer propertyRenderer = rc.getConstructor(VariableRenderer.class).newInstance(variableRenderer);
-            return propertyRenderer;
+            return rc.getConstructor(VariableRenderer.class).newInstance(variableRenderer);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -29,12 +29,12 @@ public class ObjectController implements AnnotatedElement {
         for (Method m : clazz.getDeclaredMethods()) {
             ms.add(new MethodController(this, m));
         }
-        methodControllers = ms.toArray(new MethodController[0]);
+        methodControllers = ms.toArray(new MethodController[ms.size()]);
         Set<PropertyController> ps = new LinkedHashSet<PropertyController>();
         for (Field f : clazz.getDeclaredFields()) {
             ps.add(new PropertyController(this, f));
         }
-        propertyControllers = ps.toArray(new PropertyController[0]);
+        propertyControllers = ps.toArray(new PropertyController[ps.size()]);
         renderer = RendererFactory.getInstance().createObjectRenderer(clazz);
         renderer.initialize(this);
     }
