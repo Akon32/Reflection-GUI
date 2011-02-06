@@ -26,12 +26,12 @@ public class ObjectController implements AnnotatedElement {
         Class clazz = controlledObject.getClass();
         // TODO: Positions
         Set<MethodController> ms = new LinkedHashSet<MethodController>();
-        for (Method m : clazz.getMethods()) {
+        for (Method m : clazz.getDeclaredMethods()) {
             ms.add(new MethodController(this, m));
         }
         methodControllers = ms.toArray(new MethodController[0]);
         Set<PropertyController> ps = new LinkedHashSet<PropertyController>();
-        for (Field f : clazz.getFields()) {
+        for (Field f : clazz.getDeclaredFields()) {
             ps.add(new PropertyController(this, f));
         }
         propertyControllers = ps.toArray(new PropertyController[0]);
