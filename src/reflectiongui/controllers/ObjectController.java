@@ -1,5 +1,6 @@
 package reflectiongui.controllers;
 
+import reflectiongui.annotations.Ignored;
 import reflectiongui.renderers.ObjectRenderer;
 import reflectiongui.renderers.RendererFactory;
 import reflectiongui.util.Utils;
@@ -29,12 +30,16 @@ public class ObjectController implements AnnotatedElement {
         // TODO: Positions
         Set<MethodController> ms = new LinkedHashSet<MethodController>();
         for (Method m : clazz.getDeclaredMethods()) {
-            ms.add(new MethodController(this, m));
+            if (m.getAnnotation(Ignored.class) == null) {
+                ms.add(new MethodController(this, m));
+            }
         }
         methodControllers = ms.toArray(new MethodController[ms.size()]);
         Set<PropertyController> ps = new LinkedHashSet<PropertyController>();
         for (Field f : clazz.getDeclaredFields()) {
-            ps.add(new PropertyController(this, f));
+            if (f.getAnnotation(Ignored.class) == null) {
+                ps.add(new PropertyController(this, f));
+            }
         }
         propertyControllers = ps.toArray(new PropertyController[ps.size()]);
         title = Utils.getTitleFromAnnotations(clazz, clazz.getSimpleName());
