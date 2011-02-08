@@ -1,65 +1,65 @@
 package reflectiongui;
 
-import reflectiongui.controllers.DesktopController;
 import reflectiongui.renderers.DesktopRenderer;
+import reflectiongui.renderers.RendererFactory;
 
 /**
- * Класс-синглетон, создающий графический интерфейс на основе данных о типе объекта.
+ * Класс-синглетон, создающий графический интерфейс
+ * на основе данных о типе объекта.
  */
 public class ReflectionGUI {
     private static ReflectionGUI instance;
-    private DesktopController desktopController;
+    private DesktopRenderer desktopRenderer;
 
-    protected ReflectionGUI() {
+    private ReflectionGUI() {
+        desktopRenderer = RendererFactory.getInstance().createDesktopRenderer();
     }
 
     /**
      * Установить класс, объект которого будет использоваться в качестве DesktopRenderer'а.
      *
      * @param rendererClass класс используемого DesktopRenderer'а
-     * @see #getDesktopController()
      */
-    public void setDesktopRendererClass(Class<? extends DesktopRenderer> rendererClass) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static void setDesktopRendererClass(Class<? extends DesktopRenderer> rendererClass) {
+        RendererFactory.getInstance().setDesktopRendererClass(rendererClass);
     }
 
     /**
-     * Получить контроллер рабочего стола.
-     * Выполняется ленивая инициализация поля контроллера.
-     * Контроллер будет использовать DesktopRenderer определенного класса,
-     * этот класс можно указать методом {@link ReflectionGUI#setDesktopRendererClass(Class)}
-     * <u>до</u> первого вызова данного метода.
-     * Если метод {@link ReflectionGUI#setDesktopRendererClass(Class)}
-     * не вызывать, будет использоваться некоторый класс по умолчанию.
+     * Ленивая инициализация синглетона ReflectionGUI
      *
-     * @return контроллер рабочего стола.
-     */
-    public DesktopController getDesktopController() {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    /**
-     * @return возвращает экземпляр объекта ReflectionGUI.
+     * @return экземпляр класса ReflectionGUI.
      */
     public static ReflectionGUI getInstance() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (instance == null) {
+            instance = new ReflectionGUI();
+        }
+        return instance;
     }
 
     /**
      * Добавить объекты в систему
      *
-     * @param objects объект
+     * @param objects объекты
      */
     public void addObjects(Object... objects) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (Object o : objects) {
+            desktopRenderer.addObject(o);
+        }
     }
 
     /**
      * Удалить объекты из системы
      *
-     * @param objects
+     * @param objects объекты
      */
     public void removeObjects(Object... objects) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (Object o : objects) {
+            desktopRenderer.removeObject(o);
+        }
+    }
+
+    /** Завершить приложение. */
+    public void shutdownApplication() {
+        System.exit(0);
     }
 }

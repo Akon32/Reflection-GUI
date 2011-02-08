@@ -12,9 +12,5 @@ public interface ObjectRenderer {
 
     JComponent rootComponent();
 
-    void addMethodRenderer(MethodRenderer renderer);
-
-    void addPropertyRenderer(VariableRenderer renderer);
-
     void initialize(ObjectController controller);
 }

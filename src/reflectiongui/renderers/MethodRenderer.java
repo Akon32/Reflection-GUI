@@ -32,11 +32,5 @@ public interface MethodRenderer {
      * @param controller контроллер отображаемого метода.
      */
     void initialize(MethodController controller);
-
-    void addFieldRenderer(VariableRenderer renderer);
-
-    void setResultRenderer(VariableRenderer renderer);
-
-    void setErrorRenderer(VariableRenderer renderer);
 }
 

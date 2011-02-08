@@ -2,6 +2,7 @@ package reflectiongui.controllers;
 
 import reflectiongui.renderers.RendererFactory;
 import reflectiongui.renderers.VariableRenderer;
+import reflectiongui.util.Utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -19,6 +20,7 @@ public class MethodParameters {
     private final VariableRenderer[] renderers;
     private final Annotation[][] annotations;
     private final Class[] types;
+    private final String[] titles;
 
     /**
      * Конструктор.
@@ -34,8 +36,13 @@ public class MethodParameters {
         renderers = new VariableRenderer[paramCount];
         annotations = method.getParameterAnnotations();
         types = method.getParameterTypes();
+        titles = new String[paramCount];
         for (int i = 0; i < paramCount; i++) {
             controllers[i] = new ParameterController(i);
+            // !!! здесь есть жесткая зависимость от порядка создания объектов.
+            // верная последовательность: controller -> title -> renderer.initialize()
+            // надо бы что-то с этим сделать
+            titles[i] = Utils.getTitleFromAnnotations(controllers[i], "param-" + i);
             renderers[i] = RendererFactory.getInstance().createVariableRenderer(types[i], annotations[i]);
             renderers[i].initialize(controllers[i]);
         }
@@ -69,6 +76,15 @@ public class MethodParameters {
     }
 
     /**
+     * Обновить поля объекта в соответствии с тем,
+     * что содержит графический интерфейс.
+     */
+    public void updateObject() {
+        for (VariableController c : controllers)
+            c.updateObject();
+    }
+
+    /**
      * Контроллер параметра метода. Тесно связан со своим внешним объектом {@link MethodParameters},
      * использует значения его полей-массивов как свои, подставляя свой номер.
      */
@@ -97,29 +113,18 @@ public class MethodParameters {
         }
 
         @Override
+        public String getTitle() {
+            return titles[paramNumber];
+        }
+
+        @Override
         public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
             return getAnnotation(annotationClass) != null;
         }
 
         @Override
         public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
-            return findObjectOfClass(annotations[paramNumber], annotationClass);
-        }
-
-        /**
-         * Найти среди массива объект заданного класса.
-         *
-         * @param array массив аннотаций.
-         * @param clazz класс искомого объекта.
-         * @param <T>   тип искомого объекта.
-         * @return первый найденный объект, или null, если ничего не найдено.
-         */
-        public <T> T findObjectOfClass(Object[] array, Class<T> clazz) {
-            for (Object a : array)
-                if (clazz.isAssignableFrom(a.getClass())) {
-                    return clazz.cast(a);
-                }
-            return null;
+            return Utils.findObjectOfClass(annotations[paramNumber], annotationClass);
         }
 
         @Override
