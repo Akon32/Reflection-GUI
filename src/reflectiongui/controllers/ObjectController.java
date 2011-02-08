@@ -27,7 +27,6 @@ public class ObjectController implements AnnotatedElement {
     public ObjectController(Object controlledObject) {
         this.controlledObject = controlledObject;
         Class clazz = controlledObject.getClass();
-        // TODO: Positions
         Set<MethodController> ms = new LinkedHashSet<MethodController>();
         for (Method m : clazz.getDeclaredMethods()) {
             if (m.getAnnotation(Ignored.class) == null) {

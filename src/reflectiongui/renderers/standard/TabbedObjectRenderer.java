@@ -7,11 +7,11 @@ import reflectiongui.renderers.ObjectRenderer;
 
 import javax.swing.*;
 
-/** Renderer объектов по умолчанию. */
-public class DefaultObjectRenderer implements ObjectRenderer {
+/** Renderer объектов, в котором методы отображаются как вкладки в TabbedPane. */
+public class TabbedObjectRenderer implements ObjectRenderer {
     private JComponent rootComponent;
 
-    public DefaultObjectRenderer() {
+    public TabbedObjectRenderer() {
         rootComponent = new JPanel();
         rootComponent.setLayout(new BoxLayout(rootComponent, BoxLayout.PAGE_AXIS));
     }
