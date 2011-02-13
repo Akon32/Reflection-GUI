@@ -1,5 +1,6 @@
 package reflectiongui.demo;
 
+@reflectiongui.annotations.InCenter
 public class Calculator {
     Double a = 0d;
     Double b = 0d;
