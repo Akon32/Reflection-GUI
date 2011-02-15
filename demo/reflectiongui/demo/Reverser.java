@@ -1,12 +1,12 @@
 package reflectiongui.demo;
 
-import reflectiongui.annotations.Ignored;
-import reflectiongui.annotations.Position;
-import reflectiongui.annotations.RenderObjectBy;
-import reflectiongui.annotations.Title;
+import reflectiongui.annotations.*;
 import reflectiongui.renderers.standard.PlainObjectRenderer;
 
 @RenderObjectBy(PlainObjectRenderer.class)
+@FramePosition(x = 20, y = 30)
+@FrameSize(width = 300, height = 200)
+@Title("StringReverser")
 public class Reverser {
     @Position(2)
     String a;

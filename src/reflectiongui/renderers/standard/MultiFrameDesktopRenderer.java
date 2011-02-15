@@ -1,6 +1,9 @@
 package reflectiongui.renderers.standard;
 
 import reflectiongui.ReflectionGUI;
+import reflectiongui.annotations.FramePosition;
+import reflectiongui.annotations.FrameSize;
+import reflectiongui.annotations.InCenter;
 import reflectiongui.controllers.ObjectController;
 import reflectiongui.renderers.DesktopRenderer;
 
@@ -31,7 +34,22 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
         frame.setTitle(controller.getTitle());
         frame.getContentPane().add(controller.getRenderer().rootComponent());
         frame.pack();
-        frame.setLocationByPlatform(true);
+        // определение размера из аннотаций
+        if (controller.isAnnotationPresent(FrameSize.class)) {
+            FrameSize s = controller.getAnnotation(FrameSize.class);
+            frame.setSize(s.width(), s.height());
+        }
+        // определение позиции из аннотаций
+        if (controller.isAnnotationPresent(InCenter.class)) {
+            // поместить в центр экрана
+            // (!) важно, чтобы размер окна устанавливался ДО вызова следующего метода
+            frame.setLocationRelativeTo(null);
+        } else if (controller.isAnnotationPresent(FramePosition.class)) {
+            FramePosition p = controller.getAnnotation(FramePosition.class);
+            frame.setLocation(p.x(), p.y());//разместить по указанным координатам
+        } else {
+            frame.setLocationByPlatform(true);//размещение по умолчанию
+        }
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
