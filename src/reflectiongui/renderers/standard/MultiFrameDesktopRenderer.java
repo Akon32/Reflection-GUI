@@ -5,6 +5,7 @@ import reflectiongui.annotations.FramePosition;
 import reflectiongui.annotations.FrameSize;
 import reflectiongui.annotations.InCenter;
 import reflectiongui.controllers.ObjectController;
+import reflectiongui.grouping.GroupManager;
 import reflectiongui.renderers.DesktopRenderer;
 
 import javax.swing.*;
@@ -30,6 +31,7 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
 
     private JFrame createFrame(final Object object) {
         JFrame frame = new JFrame();
+        // добавление в группы происходит при вызове конструктора ObjectController
         ObjectController controller = new ObjectController(object);
         frame.setTitle(controller.getTitle());
         frame.getContentPane().add(controller.getRenderer().rootComponent());
@@ -65,6 +67,8 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
         if (frame != null) {
             frame.dispose();
         }
+        // Удаление из групп
+        GroupManager.getInstance().removeObjectsOfOwner(object);
         if (frames.isEmpty()) {
             ReflectionGUI.getInstance().shutdownApplication();
         }

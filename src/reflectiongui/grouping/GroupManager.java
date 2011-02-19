@@ -1,5 +1,9 @@
 package reflectiongui.grouping;
 
+import reflectiongui.annotations.GlobalGroups;
+import reflectiongui.annotations.Groups;
+
+import java.lang.reflect.AnnotatedElement;
 import java.util.*;
 
 /**
@@ -89,7 +93,7 @@ public class GroupManager {
      * @param obj        добавляемый объект.
      * @param groupNames список имен групп.
      */
-    public void addToGroups(Object owner, Object obj, String... groupNames) {
+    private void addToGroups(Object owner, Object obj, String... groupNames) {
         if (groupNames.length == 0) {
             return;
         }
@@ -119,7 +123,7 @@ public class GroupManager {
      * @param obj        добавляемый объект.
      * @param groupNames список имен групп.
      */
-    public void addToGlobalGroups(Object owner, Object obj, String... groupNames) {
+    private void addToGlobalGroups(Object owner, Object obj, String... groupNames) {
         if (groupNames.length == 0) {
             return;
         }
@@ -151,7 +155,7 @@ public class GroupManager {
      *
      * @param owner объект-владелец.
      */
-    public void removeObjects(Object owner) {
+    public void removeObjectsOfOwner(Object owner) {
         removeLocal(owner);
         removeGlobal(owner);
     }
@@ -179,6 +183,41 @@ public class GroupManager {
         }
     }
 
+    /**
+     * Добавление объекта в локальные и глобальные группы в соответствии с аннотациями.
+     *
+     * @param owner            объект-владелец.
+     * @param obj              добавляемый объект.
+     * @param annotatedElement элемент с аннотациями, по которым определяются имена групп.
+     */
+    public void addToGroups(Object owner, Object obj, AnnotatedElement annotatedElement) {
+        Groups groups = annotatedElement.getAnnotation(Groups.class);
+        if (groups != null && groups.value() != null) {
+            addToGroups(owner, obj, groups.value());
+        }
+        GlobalGroups globalGroups = annotatedElement.getAnnotation(GlobalGroups.class);
+        if (globalGroups != null && globalGroups.value() != null) {
+            addToGlobalGroups(owner, obj, globalGroups.value());
+        }
+    }
+
+    /**
+     * Добавление (аннотированного) объекта в локальные и глобальные группы
+     * в соответствии с его аннотациями.
+     *
+     * @param owner объект-владелец.
+     * @param obj   добавляемый объект.
+     */
+    public void addToGroups(Object owner, AnnotatedElement obj) {
+        addToGroups(owner, obj, obj);
+    }
+
+    /**
+     * Элемент таблицы глобальных групп.
+     * Содержит объект и имя группы.
+     *
+     * @see #globalGroupTables
+     */
     private static class TableEntry {
         public final String groupName;
         public final Object object;

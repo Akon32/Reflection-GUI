@@ -21,8 +21,12 @@ public interface DesktopRenderer {
      * Удалить объект с "рабочего стола".
      * <p/>
      * При удалении всех объектов некоторые реализации DesktopRenderer могут завершать программу.
+     * <p/>
+     * Вызов этого метода также должен вызывать удаление из всех групп объектов,
+     * которыми "владеет" переданный объект.
      *
      * @param object объект, ранее отображённый вызовом {@link #addObject(Object)}.
+     * @see reflectiongui.grouping.GroupManager#removeObjectsOfOwner(Object)
      */
     void removeObject(Object object);
 }
