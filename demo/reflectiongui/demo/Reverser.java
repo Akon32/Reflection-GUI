@@ -12,8 +12,9 @@ public class Reverser {
     String a;
     @Position(3)
     String b;
+    @Multiline
     @Position(1)
-    String r;
+    String r = "multiline\ntext";
 
     @Position(0)
     public String reverse(@Title("string") String string) {
@@ -25,4 +26,3 @@ public class Reverser {
     private void a() {
     }
 }
-

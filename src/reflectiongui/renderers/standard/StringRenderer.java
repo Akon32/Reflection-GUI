@@ -1,12 +1,19 @@
 package reflectiongui.renderers.standard;
 
+import reflectiongui.annotations.Multiline;
 import reflectiongui.controllers.VariableController;
 import reflectiongui.renderers.VariableRenderer;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-/** Renderer типа для String. */
+/**
+ * Renderer типа для String.
+ * <p/>
+ * По умолчанию строка отображается через JTextField.
+ * Если указана аннотация {@link reflectiongui.annotations.Multiline},
+ * то для отображения используется JTextArea.
+ */
 public class StringRenderer implements VariableRenderer {
     private JPanel panel;
     private JLabel label;
@@ -15,9 +22,6 @@ public class StringRenderer implements VariableRenderer {
     public StringRenderer() {
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
-        panel.add(label = new JLabel());
-        // TODO: другие типы компонентов (JTextPane,JTextArea)
-        panel.add(textComponent = new JTextField());
     }
 
     @Override
@@ -37,6 +41,15 @@ public class StringRenderer implements VariableRenderer {
 
     @Override
     public void initialize(VariableController controller) {
+        // добавление подписи
+        panel.add(label = new JLabel());
         label.setText(controller.getTitle());
+        // создание поля
+        if (controller.isAnnotationPresent(Multiline.class)) {
+            textComponent = new JTextArea();
+        } else {
+            textComponent = new JTextField();
+        }
+        panel.add(textComponent);
     }
 }
