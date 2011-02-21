@@ -9,6 +9,9 @@ import reflectiongui.ReflectionGUI;
 public class Demo1 {
 
     public static void main(String[] args) {
-        ReflectionGUI.getInstance().addObjects(new Reverser(), new Calculator());
+        ReflectionGUI.getInstance().addObjects(
+                new Reverser(),
+                new GroupDemo(), new GroupDemo(),
+                new Calculator());
     }
 }
