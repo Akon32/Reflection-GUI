@@ -1,6 +1,7 @@
 package reflectiongui.controllers;
 
 import reflectiongui.annotations.Ignored;
+import reflectiongui.grouping.GroupManager;
 import reflectiongui.renderers.ObjectRenderer;
 import reflectiongui.renderers.RendererFactory;
 import reflectiongui.util.Utils;
@@ -24,20 +25,33 @@ public class ObjectController implements AnnotatedElement {
     private PropertyController[] propertyControllers;
     private String title;
 
+    /**
+     * Конструктор. В нем создаются все контроллеры свойств и методов объекта,
+     * а также производится добавление в группы соответственно аннотированных
+     * объектов.
+     *
+     * @param controlledObject контролируемый объект.
+     */
     public ObjectController(Object controlledObject) {
         this.controlledObject = controlledObject;
+        // ^ после этого объект корректно ведет себя как AnnotatedElement
         Class clazz = controlledObject.getClass();
+        GroupManager.getInstance().addToGroups(controlledObject, this);
         Set<MethodController> ms = new LinkedHashSet<MethodController>();
         for (Method m : clazz.getDeclaredMethods()) {
             if (m.getAnnotation(Ignored.class) == null) {
-                ms.add(new MethodController(this, m));
+                MethodController controller = new MethodController(this, m);
+                GroupManager.getInstance().addToGroups(controlledObject, controller);
+                ms.add(controller);
             }
         }
         methodControllers = ms.toArray(new MethodController[ms.size()]);
         Set<PropertyController> ps = new LinkedHashSet<PropertyController>();
         for (Field f : clazz.getDeclaredFields()) {
             if (f.getAnnotation(Ignored.class) == null) {
-                ps.add(new PropertyController(this, f));
+                PropertyController controller = new PropertyController(this, f);
+                GroupManager.getInstance().addToGroups(controlledObject, controller);
+                ps.add(controller);
             }
         }
         propertyControllers = ps.toArray(new PropertyController[ps.size()]);
