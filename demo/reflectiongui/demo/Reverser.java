@@ -17,8 +17,8 @@ public class Reverser {
     String r = "multiline\ntext";
 
     @Position(0)
-    public String reverse(@Title("string") String string) {
-        StringBuilder b = new StringBuilder(string);
+    public String reverse(@Title("string") String string, @Title("upper case") Boolean upper) {
+        StringBuilder b = new StringBuilder(upper ? string.toUpperCase() : string);
         return b.reverse().toString();
     }
 
