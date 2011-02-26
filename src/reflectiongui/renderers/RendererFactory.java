@@ -115,7 +115,7 @@ public class RendererFactory {
     public VariableRenderer createVariableRenderer(Class type, Annotation[] annotations)
             throws IllegalArgumentException {
         RenderVariableBy renderBy = Utils.findObjectOfClass(annotations, RenderVariableBy.class);
-        Class<? extends VariableRenderer> rc = renderBy == null ? type2renderer.get(type.getCanonicalName()) : renderBy.value();
+        Class<? extends VariableRenderer> rc = renderBy == null ? findRendererFor(type) : renderBy.value();
         if (rc == null) {
             throw new IllegalArgumentException("Can`t find type renderer for type: " + type.getName());
         }
@@ -123,6 +123,34 @@ public class RendererFactory {
             return rc.newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Найти VariableRenderer для указанного типа.
+     * <p/>
+     * Поиск производится в {@link #type2renderer} по каноническому имени класса.
+     * Если в type2renderer нет VariableRenderer'а для указанного типа, то поиск повторяется
+     * для суперкласса (если у типа есть суперкласс).
+     *
+     * @param type тип, для которого ищется VariableRenderer
+     * @return VariableRenderer для указанного типа, или renderer для {@link java.lang.Object},
+     *         если подходящий renderer не найден.
+     */
+    private Class<? extends VariableRenderer> findRendererFor(Class type) {
+        while (true) {
+            // поиск renderer'а
+            Class<? extends VariableRenderer> res = type2renderer.get(type.getCanonicalName());
+            if (res != null) {
+                return res; // renderer найден.
+            } else {
+                // продолжим поиск, уже для родителя.
+                type = type.getSuperclass();
+                if (type == null) {
+                    // родителя нет, ищем для java.lang.Object
+                    return type2renderer.get(Object.class.getCanonicalName());
+                }
+            }
         }
     }
 
