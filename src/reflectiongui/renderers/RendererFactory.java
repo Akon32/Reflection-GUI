@@ -35,9 +35,9 @@ public class RendererFactory {
      */
     private final String CUSTOM_RENDERER_CLASSES_RESOURCE_PATH = "/META-INF/renderers.properties";
 
-    /** Соответствие типов переменных renderer'ам типов. type -> rendererClass */
+    /** Соответствие имён типов переменных renderer'ам типов. type.canonicalName -> rendererClass */
     @SuppressWarnings("unchecked")//ну что тут проверять? HashMap он и есть Map<....>.
-    private Map<Class, Class<? extends VariableRenderer>> type2renderer = new HashMap();
+    private Map<String, Class<? extends VariableRenderer>> type2renderer = new HashMap();
     /** Используемый по умолчанию класс renderer'а методов. */
     private Class<? extends MethodRenderer> defaultMethodRendererClass;
     /** Используемый по умолчанию класс renderer'а свойств. */
@@ -115,7 +115,7 @@ public class RendererFactory {
     public VariableRenderer createVariableRenderer(Class type, Annotation[] annotations)
             throws IllegalArgumentException {
         RenderVariableBy renderBy = Utils.findObjectOfClass(annotations, RenderVariableBy.class);
-        Class<? extends VariableRenderer> rc = renderBy == null ? type2renderer.get(type) : renderBy.value();
+        Class<? extends VariableRenderer> rc = renderBy == null ? type2renderer.get(type.getCanonicalName()) : renderBy.value();
         if (rc == null) {
             throw new IllegalArgumentException("Can`t find type renderer for type: " + type.getName());
         }
@@ -184,7 +184,7 @@ public class RendererFactory {
         Properties typeRenderers = loadPropertiesFromResources(TYPE_RENDERERS_RESOURCE_PATH, CUSTOM_TYPE_RENDERERS_RESOURCE_PATH);
         for (String s : typeRenderers.stringPropertyNames()) {
             try {
-                type2renderer.put(Class.forName(s), Class.forName(typeRenderers.getProperty(s)).asSubclass(VariableRenderer.class));
+                type2renderer.put(s, Class.forName(typeRenderers.getProperty(s)).asSubclass(VariableRenderer.class));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("Can`t find correct type renderer class for type " + s, e);
             }
