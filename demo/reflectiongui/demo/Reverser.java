@@ -19,9 +19,11 @@ public class Reverser {
     @Position(1)
     String r = "multiline\ntext";
     List<Double> list = Arrays.asList(1d, 2d, 3d);
+    long count;
 
     @Position(0)
     public String reverse(@Title("string") String string, @Title("upper case") boolean upper) {
+        count++;
         StringBuilder b = new StringBuilder(upper ? string.toUpperCase() : string);
         return b.reverse().toString();
     }
