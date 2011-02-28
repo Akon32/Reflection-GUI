@@ -12,7 +12,7 @@ public class Demo1 {
         ReflectionGUI.getInstance().addObjects(
                 new Reverser(),
                 new GroupDemo(), new GroupDemo(),
-                new MatrixDemo(),
+                new Types(),
                 new Calculator());
     }
 }
