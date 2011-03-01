@@ -4,7 +4,6 @@ import reflectiongui.annotations.Ignored;
 import reflectiongui.grouping.GroupManager;
 import reflectiongui.renderers.ObjectRenderer;
 import reflectiongui.renderers.RendererFactory;
-import reflectiongui.util.Utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -23,7 +22,7 @@ public class ObjectController implements AnnotatedElement {
     private ObjectRenderer renderer;
     private MethodController[] methodControllers;
     private PropertyController[] propertyControllers;
-    private String title;
+    private TitleGetter titleGetter;
 
     /**
      * Конструктор. В нем создаются все контроллеры свойств и методов объекта,
@@ -55,7 +54,7 @@ public class ObjectController implements AnnotatedElement {
             }
         }
         propertyControllers = ps.toArray(new PropertyController[ps.size()]);
-        title = Utils.getTitleFromAnnotations(clazz, clazz.getSimpleName());
+        titleGetter = new TitleGetter(controlledObject);
 
         renderer = RendererFactory.getInstance().createObjectRenderer(clazz);
         renderer.initialize(this);
@@ -79,6 +78,7 @@ public class ObjectController implements AnnotatedElement {
         for (VariableController c : propertyControllers) {
             c.updateUI();
         }
+        // TODO: updating title in objectrender / desktoprenderer
     }
 
     public Object getControlledObject() {
@@ -94,7 +94,7 @@ public class ObjectController implements AnnotatedElement {
     }
 
     public String getTitle() {
-        return title;
+        return titleGetter.getTitle();
     }
 
     @Override
