@@ -11,6 +11,9 @@ import java.util.List;
 @FrameSize(width = 300, height = 250)
 @Title("StringReverser")
 public class Reverser {
+    @Ignored
+    @TitleField
+    private String title = "String Reverser";
     @Position(2)
     String a;
     @Position(3)
@@ -25,6 +28,7 @@ public class Reverser {
     public String reverse(@Title("string") String string, @Title("upper case") boolean upper) {
         count++;
         StringBuilder b = new StringBuilder(upper ? string.toUpperCase() : string);
+        title = "String Reverser (" + count + ")";
         return b.reverse().toString();
     }
 
