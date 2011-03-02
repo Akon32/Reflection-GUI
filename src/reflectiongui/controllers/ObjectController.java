@@ -23,6 +23,7 @@ public class ObjectController implements AnnotatedElement {
     private MethodController[] methodControllers;
     private PropertyController[] propertyControllers;
     private TitleGetter titleGetter;
+    private ObjectFrameUpdater frameUpdater;
 
     /**
      * Конструктор. В нем создаются все контроллеры свойств и методов объекта,
@@ -78,7 +79,9 @@ public class ObjectController implements AnnotatedElement {
         for (VariableController c : propertyControllers) {
             c.updateUI();
         }
-        // TODO: updating title in objectrender / desktoprenderer
+        if (frameUpdater != null) {
+            frameUpdater.updateFrame();
+        }
     }
 
     public Object getControlledObject() {
@@ -87,6 +90,10 @@ public class ObjectController implements AnnotatedElement {
 
     public ObjectRenderer getRenderer() {
         return renderer;
+    }
+
+    public void setFrameUpdater(ObjectFrameUpdater frameUpdater) {
+        this.frameUpdater = frameUpdater;
     }
 
     public void setRenderer(ObjectRenderer renderer) {

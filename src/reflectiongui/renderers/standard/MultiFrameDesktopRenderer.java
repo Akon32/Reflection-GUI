@@ -5,6 +5,7 @@ import reflectiongui.annotations.FramePosition;
 import reflectiongui.annotations.FrameSize;
 import reflectiongui.annotations.InCenter;
 import reflectiongui.controllers.ObjectController;
+import reflectiongui.controllers.ObjectFrameUpdater;
 import reflectiongui.grouping.GroupManager;
 import reflectiongui.renderers.DesktopRenderer;
 
@@ -33,7 +34,6 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
         JFrame frame = new JFrame();
         // добавление в группы происходит при вызове конструктора ObjectController
         ObjectController controller = new ObjectController(object);
-        frame.setTitle(controller.getTitle());
         frame.getContentPane().add(controller.getRenderer().rootComponent());
         frame.pack();
         // определение размера из аннотаций
@@ -58,6 +58,10 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
                 removeObject(object);
             }
         });
+        // создание ObjectFrameUpdater'а и установка с помощью него параметров (заголовка).
+        ObjectFrameUpdater frameUpdater = new JFrameObjectFrameUpdater(frame, controller);
+        controller.setFrameUpdater(frameUpdater);
+        frameUpdater.updateFrame();
         return frame;
     }
 
@@ -71,6 +75,22 @@ public class MultiFrameDesktopRenderer implements DesktopRenderer {
         GroupManager.getInstance().removeObjectsOfOwner(object);
         if (frames.isEmpty()) {
             ReflectionGUI.getInstance().shutdownApplication();
+        }
+    }
+
+    /** ObjectFrameUpdater, используемый для обновления окон объектов. */
+    private class JFrameObjectFrameUpdater implements ObjectFrameUpdater {
+        private final JFrame frame;
+        private final ObjectController controller;
+
+        private JFrameObjectFrameUpdater(JFrame frame, ObjectController controller) {
+            this.frame = frame;
+            this.controller = controller;
+        }
+
+        @Override
+        public void updateFrame() {
+            frame.setTitle(controller.getTitle());
         }
     }
 }
