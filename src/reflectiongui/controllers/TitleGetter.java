@@ -23,7 +23,16 @@ public class TitleGetter {
     private String title;
     private Field titleField;
 
-    public TitleGetter(Object object) {
+    /**
+     * Создать TitleGetter, получающий заголовок из контролируемого объекта.
+     *
+     * @param object контролируемый объект.
+     * @throws IllegalArgumentException если найдено более одного поля с аннотацией
+     *                                  {@link reflectiongui.annotations.TitleField},
+     *                                  или найдено поле с такой аннотацией, но
+     *                                  типа не {@link String}.
+     */
+    public TitleGetter(Object object) throws IllegalArgumentException {
         this.object = object;
         Class clazz = object.getClass();
         title = Utils.getTitleFromAnnotations(clazz, clazz.getSimpleName());
