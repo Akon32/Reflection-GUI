@@ -5,6 +5,7 @@ import reflectiongui.ReflectionGUI;
 import reflectiongui.annotations.FramePosition;
 import reflectiongui.annotations.FrameSize;
 import reflectiongui.controllers.ObjectController;
+import reflectiongui.controllers.ObjectFrameUpdater;
 import reflectiongui.grouping.GroupManager;
 import reflectiongui.renderers.DesktopRenderer;
 
@@ -48,7 +49,6 @@ public class DesktopPaneDesktopRenderer implements DesktopRenderer {
         JInternalFrame frame = new JInternalFrame();
         // добавление в группы происходит при вызове конструктора ObjectController
         ObjectController controller = new ObjectController(object);
-        frame.setTitle(controller.getTitle());
         frame.getContentPane().add(controller.getRenderer().rootComponent());
         frame.pack();
         // определение размера из аннотаций
@@ -68,6 +68,10 @@ public class DesktopPaneDesktopRenderer implements DesktopRenderer {
                 removeObject(object);
             }
         });
+        // создание ObjectFrameUpdater'а и установка с помощью него параметров (заголовка).
+        ObjectFrameUpdater frameUpdater = new JInternalFrameObjectFrameUpdater(frame, controller);
+        controller.setFrameUpdater(frameUpdater);
+        frameUpdater.updateFrame();
         return frame;
     }
 
@@ -83,6 +87,22 @@ public class DesktopPaneDesktopRenderer implements DesktopRenderer {
         if (frames.isEmpty()) {
             mainFrame.dispose();
             ReflectionGUI.getInstance().shutdownApplication();
+        }
+    }
+
+    /** ObjectFrameUpdater, используемый для обновления окон объектов. */
+    private class JInternalFrameObjectFrameUpdater implements ObjectFrameUpdater {
+        private final JInternalFrame frame;
+        private final ObjectController controller;
+
+        private JInternalFrameObjectFrameUpdater(JInternalFrame frame, ObjectController controller) {
+            this.frame = frame;
+            this.controller = controller;
+        }
+
+        @Override
+        public void updateFrame() {
+            frame.setTitle(controller.getTitle());
         }
     }
 }
