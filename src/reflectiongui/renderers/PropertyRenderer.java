@@ -1,5 +1,6 @@
 package reflectiongui.renderers;
 
+import reflectiongui.annotations.WithSetButton;
 import reflectiongui.controllers.VariableController;
 
 import javax.swing.*;
@@ -25,15 +26,6 @@ public class PropertyRenderer implements VariableRenderer {
         rootComponent = new JPanel();
         rootComponent.setLayout(new BoxLayout(rootComponent, BoxLayout.LINE_AXIS));
         rootComponent.add(variableRenderer.rootComponent());
-        //TODO: задание подписи кнопки через аннотации
-        JButton button = new JButton("set");
-        rootComponent.add(button);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                variableController.updateObject();
-            }
-        });
     }
 
     public JComponent rootComponent() {
@@ -51,6 +43,16 @@ public class PropertyRenderer implements VariableRenderer {
     public void initialize(VariableController controller) {
         variableController = controller;
         variableRenderer.initialize(controller);
+        if (controller.isAnnotationPresent(WithSetButton.class)) {
+            String buttonTitle = controller.getAnnotation(WithSetButton.class).value();
+            JButton button = new JButton(buttonTitle);
+            rootComponent.add(button);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    variableController.updateObject();
+                }
+            });
+        }
     }
-
 }
