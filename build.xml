@@ -4,6 +4,12 @@
     <target name="buildclean" depends="clean,build" description="Очистить и собрать"/>
     <target name="compile" depends="mkdirs">
         <javac srcdir="src" destdir="build/classes"/>
+        <exec osfamily="unix" output="build/classes/version" executable="git">
+            <arg line="log -n1 --format=%H"/>
+        </exec>
+        <exec osfamily="unix" output="build/classes/version" executable="git" append="true">
+            <arg line="status -s"/>
+        </exec>
     </target>
     <target name="mkdirs">
         <mkdir dir="build"/>
