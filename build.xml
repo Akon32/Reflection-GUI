@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="Reflection-GUI" default="build" basedir=".">
-  <target name="build" depends="compile,jar" description="Собрать проект"/>
-  <target name="buildclean" depends="clean,build" description="Очистить и собрать"/>
-  <target name="compile" depends="mkdirs">
-    <javac srcdir="src" destdir="build/classes"/>
-  </target>
-  <target name="mkdirs">
-    <mkdir dir="build"/>
-    <mkdir dir="build/classes"/>
-  </target>
-  <target name="jar" depends="compile">
-    <jar destfile="build/Reflection-GUI.jar">
-      <zipfileset dir="build/classes"/>
-      <zipfileset dir="res"/>
-    </jar>
-  </target>
-  <target name="clean" description="Очистить">
-    <delete dir="build"/>
-  </target>
+    <target name="build" depends="compile,jar" description="Собрать проект"/>
+    <target name="buildclean" depends="clean,build" description="Очистить и собрать"/>
+    <target name="compile" depends="mkdirs">
+        <javac srcdir="src" destdir="build/classes"/>
+        <exec osfamily="unix" output="build/classes/version" executable="git">
+            <arg line="log -n1 --format=%H"/>
+        </exec>
+        <exec osfamily="unix" output="build/classes/version" executable="git" append="true">
+            <arg line="status -s"/>
+        </exec>
+    </target>
+    <target name="mkdirs">
+        <mkdir dir="build"/>
+        <mkdir dir="build/classes"/>
+    </target>
+    <target name="jar" depends="compile">
+        <jar destfile="build/Reflection-GUI.jar">
+            <zipfileset dir="build/classes"/>
+            <zipfileset dir="res"/>
+        </jar>
+    </target>
+    <target name="clean" description="Очистить">
+        <delete dir="build"/>
+    </target>
 
-  <target name="rundemo-1" depends="builddemo" description="Run demo (1)">
-    <java classpath="build/Reflection-GUI.jar:build/demo-classes"
-          classname="reflectiongui.demo.Demo1" fork="true"/>
-  </target>
-  <target name="builddemo" depends="jar">
-    <mkdir dir="build/demo-classes"/>
-    <javac srcdir="demo" destdir="build/demo-classes" classpath="build/Reflection-GUI.jar"/>
-  </target>
+    <target name="rundemo-1" depends="builddemo" description="Run demo (1)">
+        <java classpath="build/Reflection-GUI.jar:build/demo-classes"
+              classname="reflectiongui.demo.Demo1" fork="true"/>
+    </target>
+    <target name="builddemo" depends="jar">
+        <mkdir dir="build/demo-classes"/>
+        <javac srcdir="demo" destdir="build/demo-classes" classpath="build/Reflection-GUI.jar"/>
+    </target>
 </project>
