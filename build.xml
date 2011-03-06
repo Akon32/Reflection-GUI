@@ -29,6 +29,10 @@
         <java classpath="build/Reflection-GUI.jar:build/demo-classes"
               classname="reflectiongui.demo.Demo1" fork="true"/>
     </target>
+    <target name="rundemo-2" depends="builddemo" description="Run demo (2)">
+        <java classpath="build/Reflection-GUI.jar:build/demo-classes"
+              classname="reflectiongui.demo.Demo2" fork="true"/>
+    </target>
     <target name="builddemo" depends="jar">
         <mkdir dir="build/demo-classes"/>
         <javac srcdir="demo" destdir="build/demo-classes" classpath="build/Reflection-GUI.jar"/>
