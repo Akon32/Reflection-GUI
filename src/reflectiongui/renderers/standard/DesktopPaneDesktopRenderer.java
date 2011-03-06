@@ -4,6 +4,7 @@ package reflectiongui.renderers.standard;
 import reflectiongui.ReflectionGUI;
 import reflectiongui.annotations.FramePosition;
 import reflectiongui.annotations.FrameSize;
+import reflectiongui.annotations.InCenter;
 import reflectiongui.controllers.ObjectController;
 import reflectiongui.controllers.ObjectFrameUpdater;
 import reflectiongui.grouping.GroupManager;
@@ -12,6 +13,7 @@ import reflectiongui.renderers.DesktopRenderer;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +58,13 @@ public class DesktopPaneDesktopRenderer implements DesktopRenderer {
             FrameSize s = controller.getAnnotation(FrameSize.class);
             frame.setSize(s.width(), s.height());
         }
-        if (controller.isAnnotationPresent(FramePosition.class)) {
+        // определение позиции из аннотаций
+        if (controller.isAnnotationPresent(InCenter.class)) {
+            // поместить в центр экрана
+            // (!) важно, чтобы размер окна устанавливался ДО вызова следующего метода
+            frame.setLocation(new Point((desktopPane.getWidth() - frame.getWidth()) / 2,
+                    (desktopPane.getHeight() - frame.getHeight()) / 2));
+        } else if (controller.isAnnotationPresent(FramePosition.class)) {
             FramePosition p = controller.getAnnotation(FramePosition.class);
             frame.setLocation(p.x(), p.y());//разместить по указанным координатам
         }
