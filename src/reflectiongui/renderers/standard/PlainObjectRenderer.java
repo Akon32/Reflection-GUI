@@ -17,15 +17,18 @@ import java.util.TreeSet;
  */
 public class PlainObjectRenderer implements ObjectRenderer {
     private JComponent rootComponent;
+    private JScrollPane scrollPane;
 
     public PlainObjectRenderer() {
         rootComponent = new JPanel();
         rootComponent.setLayout(new BoxLayout(rootComponent, BoxLayout.PAGE_AXIS));
+        scrollPane = new JScrollPane();
+        scrollPane.setViewportView(rootComponent);
     }
 
     @Override
     public JComponent rootComponent() {
-        return rootComponent;
+        return scrollPane;
     }
 
     @Override
