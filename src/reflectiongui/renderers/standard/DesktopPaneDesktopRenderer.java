@@ -74,6 +74,8 @@ public class DesktopPaneDesktopRenderer implements DesktopRenderer {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
                 removeObject(object);
+                // нужно вручную вызывать прорисовку desktopPane.
+                desktopPane.repaint();
             }
         });
         // создание ObjectFrameUpdater'а и установка с помощью него параметров (заголовка).
