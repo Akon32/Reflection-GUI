@@ -42,4 +42,15 @@ public class Types {
     String S = "multiline\ntext";
     @Title("Unknown type")
     List list = Arrays.asList("text", 25, 30.0);
+    @Title("Enum")
+    EnumDemo e = EnumDemo.Element1;
+
+    public static enum EnumDemo {
+        Element1, Element2 {
+            @Override
+            public String toString() {
+                return "Element #2";
+            }
+        }
+    }
 }
