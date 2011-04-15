@@ -4,10 +4,11 @@
     <target name="buildclean" depends="clean,build" description="Очистить и собрать"/>
     <target name="compile" depends="mkdirs">
         <javac srcdir="src" destdir="build/classes"/>
-        <exec osfamily="unix" output="build/classes/version" executable="git">
+        <property name="version.file" value="build/classes/reflectiongui/version"/>
+        <exec osfamily="unix" output="${version.file}" executable="git">
             <arg line="log -n1 --format=%H"/>
         </exec>
-        <exec osfamily="unix" output="build/classes/version" executable="git" append="true">
+        <exec osfamily="unix" output="${version.file}" executable="git" append="true">
             <arg line="status -s"/>
         </exec>
     </target>
