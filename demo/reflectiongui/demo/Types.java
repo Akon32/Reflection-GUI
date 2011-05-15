@@ -1,10 +1,12 @@
 package reflectiongui.demo;
 
 
+import reflectiongui.annotations.FileDialog;
 import reflectiongui.annotations.Multiline;
 import reflectiongui.annotations.Title;
 import reflectiongui.annotations.WithSetButton;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,6 +46,21 @@ public class Types {
     List list = Arrays.asList("text", 25, 30.0);
     @Title("Enum")
     EnumDemo e = EnumDemo.Element1;
+    @Title("File open")
+    @FileDialog(type = FileDialog.Type.OPEN,
+            approveText = "Открыть файл",
+            title = "Открыть")
+    File open;
+    @Title("File save")
+    @FileDialog(type = FileDialog.Type.SAVE,
+            title = "сохранить")
+    File save;
+    @Title("Directory")
+    @FileDialog(selectionMode = FileDialog.DIRECTORIES_ONLY,
+            approveText = "select directory",
+            useCurrentDir = false)
+    File dir;
+
 
     public static enum EnumDemo {
         Element1, Element2 {
