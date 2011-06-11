@@ -13,6 +13,7 @@ public class Demo1 {
                 new Reverser(),
                 new GroupDemo(), new GroupDemo(),
                 new Types(),
-                new Calculator());
+                new Calculator(),
+                new MatrixCalculator());
     }
 }

@@ -15,6 +15,7 @@ public class Demo2 {
                 new Reverser(),
                 new GroupDemo(), new GroupDemo(),
                 new Types(),
-                new Calculator());
+                new Calculator(),
+                new MatrixCalculator());
     }
 }
