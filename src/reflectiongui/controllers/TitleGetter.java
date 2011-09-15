@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * <ol><li>имени класса</li>
  * <li>аннотации {@link reflectiongui.annotations.Title} класса</li>
  * <li>поля типа {@link String} с аннотацией {@link reflectiongui.annotations.TitleField}
- * (значение поля может меняться в процессе выполнения программы)</li><ol>
+ * (значение поля может меняться в процессе выполнения программы)</li></ol>
  * Если присутствуют оба типа аннотаций, заголовок берется из поля.
  * <p/>
  * Аннотацией {@link reflectiongui.annotations.TitleField} может быть аннотировано
