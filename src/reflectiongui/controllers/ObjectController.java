@@ -1,6 +1,6 @@
 package reflectiongui.controllers;
 
-import reflectiongui.annotations.Ignored;
+import reflectiongui.annotations.DefaultIgnore;
 import reflectiongui.grouping.GroupManager;
 import reflectiongui.renderers.ObjectRenderer;
 import reflectiongui.renderers.RendererFactory;
@@ -37,9 +37,11 @@ public class ObjectController implements AnnotatedElement {
         // ^ после этого объект корректно ведет себя как AnnotatedElement
         Class clazz = controlledObject.getClass();
         GroupManager.getInstance().addToGroups(controlledObject, this);
+        DefaultIgnore defaultIgnore = this.getAnnotation(DefaultIgnore.class);
+        IgnoringPolicy ignoringPolicy = defaultIgnore == null ? IgnoringPolicy.DEFAULT_SHOW : defaultIgnore.value();
         Set<MethodController> ms = new LinkedHashSet<MethodController>();
         for (Method m : clazz.getDeclaredMethods()) {
-            if (m.getAnnotation(Ignored.class) == null) {
+            if (ignoringPolicy.needShow(m)) {
                 MethodController controller = new MethodController(this, m);
                 GroupManager.getInstance().addToGroups(controlledObject, controller);
                 ms.add(controller);
@@ -48,7 +50,7 @@ public class ObjectController implements AnnotatedElement {
         methodControllers = ms.toArray(new MethodController[ms.size()]);
         Set<PropertyController> ps = new LinkedHashSet<PropertyController>();
         for (Field f : clazz.getDeclaredFields()) {
-            if (f.getAnnotation(Ignored.class) == null) {
+            if (ignoringPolicy.needShow(f)) {
                 PropertyController controller = new PropertyController(this, f);
                 GroupManager.getInstance().addToGroups(controlledObject, controller);
                 ps.add(controller);
