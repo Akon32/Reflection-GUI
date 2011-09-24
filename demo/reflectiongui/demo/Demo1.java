@@ -14,6 +14,7 @@ public class Demo1 {
                 new GroupDemo(), new GroupDemo(),
                 new Types(),
                 new Calculator(),
+                new ArraysDemo(),
                 new MatrixCalculator());
     }
 }
