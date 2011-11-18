@@ -35,6 +35,10 @@ public class SimpleDoubleVectorRenderer extends AbstractSimpleVariableRenderer {
     }
 
     private static double[] stringToVector(String s) {
+        s = s.trim();
+        if (s.isEmpty()) {
+            return new double[0];
+        }
         String ss[] = s.trim().split("\\s+");
         double res[] = new double[ss.length];
         for (int i = 0; i < res.length; i++) {
